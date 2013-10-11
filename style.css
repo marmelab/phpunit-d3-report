@@ -1,5 +1,17 @@
+body {
+    color: #444;
+    font-family: 'Gentium Book Basic', serif;
+    width: 1024px;
+    margin: auto;
+}
+
+h1 {
+    border-bottom: 1px solid #666;
+}
+
 #test_bubbles {
-    position: relative;
+
+    text-align: center;
 }
 
 .bubble {
@@ -11,4 +23,10 @@
     background: #fff;
     border-radius: 20px;
     padding: 5px 15px;
+    box-shadow: 1px 1px 3px;
+}
+
+footer {
+    text-align: center;
+    color: #666;
 }

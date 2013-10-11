@@ -62,8 +62,8 @@ d3.json("./report.json", function(error, data) {
 
             tooltip
                 .html("<strong>" + d.name + ":</strong> " + d.value + "s")
-                .style("left", (d3.event.pageX) + "px")
-                .style("top", (d3.event.pageY - 50) + "px");
+                .style("left", (d3.event.pageX + 20) + "px")
+                .style("top", (d3.event.pageY + 30) + "px");
         })
         .on("mouseout", function(d) {
             tooltip
