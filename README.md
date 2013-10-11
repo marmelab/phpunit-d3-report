@@ -1,5 +1,7 @@
 # PHPUnit D3 report
 
+![PHPUnit D3 report - By Marmelab](screenshot.png)
+
 This visualization tool provides a quick way to monitor your PHPUnit test suites. With a single glance, you will be able to identify the slowest tests, helping you to improve the overall execution time of your tests.
 
 Developed during a hackday at [Marmelab](http://www.marmelab.com), this tool is currently pretty raw, but will be improved over time.
