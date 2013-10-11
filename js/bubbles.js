@@ -26,6 +26,10 @@ var svg = d3.select("#test_bubbles").append("svg")
     .attr("height", diameter)
     .attr("class", "bubble");
 
+var tooltip = d3.select("#test_bubbles").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
 d3.json("./report.json", function(error, data) {
     if (error) {
         console.err(error);
@@ -45,10 +49,26 @@ d3.json("./report.json", function(error, data) {
                 .attr("class", "node")
                 .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
-        node.append("title")
-            .text(function(d) { return d.name + ": " + d.value + "s"; });
-
         node.append("circle")
             .attr("r", function(d) { return d.r; })
             .style("fill", function(d) { return color(d.packageName); });
+
+        node.on("mouseover", function(d) {
+            tooltip.innerText = d.name + ": " + d.value + "s";
+            tooltip
+                .transition()
+                    .duration(200)
+                    .style("opacity", 1);
+
+            tooltip
+                .html("<strong>" + d.name + ":</strong> " + d.value + "s")
+                .style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY - 50) + "px");
+        })
+        .on("mouseout", function(d) {
+            tooltip
+                .transition()
+                    .duration(200)
+                    .style("opacity", 0);
+        });
 });

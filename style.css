@@ -1,0 +1,14 @@
+#test_bubbles {
+    position: relative;
+}
+
+.bubble {
+    cursor: pointer;
+}
+
+.tooltip {
+    position: absolute;
+    background: #fff;
+    border-radius: 20px;
+    padding: 5px 15px;
+}
