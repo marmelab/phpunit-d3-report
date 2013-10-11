@@ -57,9 +57,10 @@ var bubble = d3.layout.pack()
     .size([diameter, diameter])
     .padding(3.5);
 
-function update(filter) {
-
-    node = svg.selectAll(".node").data(bubble.nodes(currentNode).filter(filter), function(d) { return d.name; });
+function update() {
+    node = svg.selectAll(".node").data(bubble.nodes(currentNode).filter(function(d) {
+        return d.depth == (currentNode.depth + 1);
+    }), function(d) { return d.name; });
 
     node.enter()
         .append("g")
@@ -81,15 +82,14 @@ function update(filter) {
             .on("mouseout", hideToolTip)
             .on("click", function(d) {
                 hideToolTip();
+                showBackLink();
                 currentNode = d;
 
                 if (!d.children) {
                     return false;
                 }
 
-                update(function(node) {
-                    return containsObject(node, d.children) && node.depth == (currentNode.depth + 1);
-                });
+                update();
             });
 }
 
@@ -125,3 +125,23 @@ function hideToolTip(d)
             .duration(200)
             .style("opacity", 0);
 }
+
+var backLink = document.getElementById("back");
+
+function hideBackLink() {
+    backLink.style.display = "none";
+}
+
+function showBackLink() {
+    backLink.style.display = "inline";
+}
+
+document.getElementById("back").addEventListener("click", function(e) {
+    e.preventDefault();
+    currentNode = currentNode.parent;
+    if (!currentNode.parent) {
+        hideBackLink();
+    }
+
+    update();
+});

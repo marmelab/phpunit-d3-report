@@ -30,3 +30,7 @@ footer {
     text-align: center;
     color: #666;
 }
+
+#back {
+    display: none;
+}
