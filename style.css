@@ -31,6 +31,10 @@ p {
     fill: red;
 }
 
+.bubble circle.failed {
+    fill: orange;
+}
+
 .tooltip {
     position: absolute;
     background: #fff;
