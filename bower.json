@@ -1,0 +1,27 @@
+{
+  "name": "phpunit-d3report",
+  "version": "0.0.1",
+  "authors": [
+    "Jonathan Petitcolas <jonathan@marmelab.com>"
+  ],
+  "description": "A D3.js visualisation tool for PHPUnit tests",
+  "main": "report.html",
+  "keywords": [
+    "PHPUnit",
+    "D3js",
+    "marmelab"
+  ],
+  "license": "MIT",
+  "homepage": "http://www.marmelab.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "~3.3.7"
+  }
+}
