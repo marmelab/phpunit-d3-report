@@ -1,5 +1,3 @@
-var bubblesContainer = document.getElementById("test_bubbles");
-
 function convertRawData(nodes) {
     var children = [];
     for(var i = 0, c = nodes.length ; i < c ; i++) {
@@ -48,25 +46,29 @@ var svg = d3.select("#test_bubbles").append("svg")
 var tooltip = d3.select("#test_bubbles").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
-var data2;
-d3.json("./report.json", function(error, data) {
-    if (error) {
-        console.err(error);
-        return;
-    }
-data2 = data;
-    var bubblizedData = bubble
-        .nodes(convertRawData(data))
-        .filter(function(node) {
-            return !node.children;
-        });
 
-    var node = svg.selectAll(".node")
-        .data(bubblizedData)
-        .enter()
-            .append("g")
-                .attr("class", "node")
-                .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+var node;
+var originData;
+
+d3.json("./report.json", function(error, data) {
+    originData = bubble.nodes(convertRawData(data));
+    update(originData.filter(function(n) { return n.depth == 1; }));
+});
+
+var currentDepth = 1;
+function update(data) {
+    node = svg.selectAll(".node").data(data, function(d) { return d.name; });
+
+    node.enter()
+        .append("g")
+            .attr("class", "node")
+            .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+    node.exit()
+        .transition()
+            .duration(200)
+            .style("opacity", 0)
+            .remove();
 
         node.append("circle")
             .attr("r", function(d) { return d.r; })
@@ -89,5 +91,27 @@ data2 = data;
                 .transition()
                     .duration(200)
                     .style("opacity", 0);
+        })
+        .on("click", function(d) {
+            if (!d.children) {
+                return false;
+            }
+
+            currentDepth++;
+
+            update(originData.filter(function(node) {
+                return containsObject(node, d.children) && node.depth == currentDepth;
+            }))
         });
-});
+}
+
+function containsObject(obj, list) {
+    var i;
+    for (i = 0; i < list.length; i++) {
+        if (list[i] === obj) {
+            return true;
+        }
+    }
+
+    return false;
+}
