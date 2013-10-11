@@ -117,8 +117,10 @@ function containsObject(obj, list) {
 
 function getToolTipContent(d)
 {
+    var time = moment({ seconds: d.value });
+
     var content  = "<h3>" + d.name + "</h3>";
-        content += "<p><strong>Time:</strong> " + d.value;
+        content += "<p><strong>Time:</strong> " + pad(time.minutes(), 2) + ":" + pad(time.seconds(), 2);
 
     if (d.type == "testsuite") {
         content += "<p>" + d.failures + " failures, " + d.errors + " errors, " + d.success + " success</p>";
@@ -190,4 +192,10 @@ function getNodeClass(d) {
     }
 
     return "success";
+}
+
+function pad(n, width, z) {
+  z = z || '0';
+  n = n + '';
+  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
