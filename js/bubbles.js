@@ -33,11 +33,6 @@ function convertRawData(nodes) {
 var diameter = 800,
     color = d3.scale.category20c();
 
-var bubble = d3.layout.pack()
-    .sort(null)
-    .size([diameter, diameter])
-    .padding(3.5);
-
 var svg = d3.select("#test_bubbles").append("svg")
     .attr("width", diameter)
     .attr("height", diameter)
@@ -49,15 +44,22 @@ var tooltip = d3.select("#test_bubbles").append("div")
 
 var node;
 var originData;
+var currentNode;
 
 d3.json("./report.json", function(error, data) {
-    originData = bubble.nodes(convertRawData(data));
-    update(originData.filter(function(n) { return n.depth == 1; }));
+    originData = convertRawData(data);
+    currentNode = originData;
+    update(function(n) { return n.depth == 1; });
 });
 
-var currentDepth = 1;
-function update(data) {
-    node = svg.selectAll(".node").data(data, function(d) { return d.name; });
+var bubble = d3.layout.pack()
+    .sort(null)
+    .size([diameter, diameter])
+    .padding(3.5);
+
+function update(filter) {
+
+    node = svg.selectAll(".node").data(bubble.nodes(currentNode).filter(filter), function(d) { return d.name; });
 
     node.enter()
         .append("g")
@@ -70,39 +72,25 @@ function update(data) {
             .style("opacity", 0)
             .remove();
 
-        node.append("circle")
-            .attr("r", function(d) { return d.r; })
-            .style("fill", function(d) { return color(d.packageName); });
+    node.append("circle")
+        .attr("r", function(d) { return d.r; })
+        .style("fill", function(d) { return color(d.name); });
 
-        node.on("mouseover", function(d) {
-            tooltip.innerText = d.name + ": " + d.value + "s";
-            tooltip
-                .transition()
-                    .duration(200)
-                    .style("opacity", 1);
+        node
+            .on("mouseover", showToolTip)
+            .on("mouseout", hideToolTip)
+            .on("click", function(d) {
+                hideToolTip();
+                currentNode = d;
 
-            tooltip
-                .html("<strong>" + d.name + ":</strong> " + d.value + "s")
-                .style("left", (d3.event.pageX + 20) + "px")
-                .style("top", (d3.event.pageY + 30) + "px");
-        })
-        .on("mouseout", function(d) {
-            tooltip
-                .transition()
-                    .duration(200)
-                    .style("opacity", 0);
-        })
-        .on("click", function(d) {
-            if (!d.children) {
-                return false;
-            }
+                if (!d.children) {
+                    return false;
+                }
 
-            currentDepth++;
-
-            update(originData.filter(function(node) {
-                return containsObject(node, d.children) && node.depth == currentDepth;
-            }))
-        });
+                update(function(node) {
+                    return containsObject(node, d.children) && node.depth == (currentNode.depth + 1);
+                });
+            });
 }
 
 function containsObject(obj, list) {
@@ -114,4 +102,26 @@ function containsObject(obj, list) {
     }
 
     return false;
+}
+
+function showToolTip(d)
+{
+    tooltip.innerText = d.name + ": " + d.value + "s";
+    tooltip
+        .transition()
+            .duration(200)
+            .style("opacity", 1);
+
+    tooltip
+        .html("<strong>" + d.name + ":</strong> " + d.value + "s")
+        .style("left", (d3.event.pageX + 20) + "px")
+        .style("top", (d3.event.pageY + 30) + "px");
+}
+
+function hideToolTip(d)
+{
+    tooltip
+        .transition()
+            .duration(200)
+            .style("opacity", 0);
 }
