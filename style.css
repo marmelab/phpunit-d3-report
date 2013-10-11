@@ -3,10 +3,15 @@ body {
     font-family: 'Gentium Book Basic', serif;
     width: 1024px;
     margin: auto;
+    font-size: 14px;
 }
 
 h1 {
     border-bottom: 1px solid #666;
+}
+
+p {
+    margin: 0;
 }
 
 #test_bubbles {
@@ -32,6 +37,21 @@ h1 {
     border-radius: 20px;
     padding: 5px 15px;
     box-shadow: 1px 1px 3px;
+    text-align: left;
+}
+
+.tooltip h3 {
+    font-size: 16px;
+}
+
+.tooltip h5 {
+    font-size: 14px;
+}
+
+.tooltip .error {
+    border-left: 3px solid red;
+    padding-left: 10px;
+    margin-left: 10px;
 }
 
 footer {

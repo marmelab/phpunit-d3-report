@@ -24,6 +24,8 @@ function convertRawData(nodes) {
         if (node.type == "testsuite") {
             child["failures"] = node.failures;
             child["errors"] = node.errors;
+            child["tests"] = node.tests;
+            child["success"] = node.tests - node.failures - node.errors;
         } else {
             child["error"] = node.error;
         }
@@ -113,18 +115,34 @@ function containsObject(obj, list) {
     return false;
 }
 
+function getToolTipContent(d)
+{
+    var content  = "<h3>" + d.name + "</h3>";
+        content += "<p><strong>Time:</strong> " + d.value;
+
+    if (d.type == "testsuite") {
+        content += "<p>" + d.failures + " failures, " + d.errors + " errors, " + d.success + " success</p>";
+    } else {
+        if (d.error) {
+            content += "<div class='error'>";
+            content += "    <h5>" + d.error.type + "</h5>";
+            content += "    <pre>" + d.error.message + "</pre>";
+            content += "</div>";
+        }
+    }
+
+    return content;
+}
+
 function showToolTip(d)
 {
-    tooltip.innerText = d.name + ": " + d.value + "s";
     tooltip
+        .html(getToolTipContent(d))
+        .style("left", (d3.event.pageX + 20) + "px")
+        .style("top", (d3.event.pageY + 30) + "px")
         .transition()
             .duration(200)
             .style("opacity", 1);
-
-    tooltip
-        .html("<strong>" + d.name + ":</strong> " + d.value + "s")
-        .style("left", (d3.event.pageX + 20) + "px")
-        .style("top", (d3.event.pageY + 30) + "px");
 }
 
 function hideToolTip(d)
