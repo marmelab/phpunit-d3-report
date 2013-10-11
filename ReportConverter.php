@@ -28,6 +28,7 @@ class ReportConverter
     private function getTestSuiteAsArray(\DOMElement $testSuite)
     {
         $outputTestCase = array(
+            'type' => 'testsuite',
             'name' => $testSuite->getAttribute('name'),
             'tests' => (int) $testSuite->getAttribute('tests'),
             'failures' => (int) $testSuite->getAttribute('failures'),
@@ -71,6 +72,7 @@ class ReportConverter
     private function getTestCaseAsArray(\DOMElement $testCase)
     {
         return array(
+            'type' => 'testcase',
             'name' => $testCase->getAttribute('name'),
             'class' => $testCase->getAttribute('class'),
             'file' => $testCase->getAttribute('file'),

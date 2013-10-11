@@ -1,13 +1,32 @@
 var bubblesContainer = document.getElementById("test_bubbles");
 
-function convertRawData(data) {
+function convertRawData(nodes) {
     var children = [];
-    for(var i = 0, c = data.length ; i < c ; i++) {
-        var node = data[i];
-        children.push({
+    for(var i = 0, c = nodes.length ; i < c ; i++) {
+        var node = nodes[i];
+
+        var testsuites = node.testsuites;
+        var testcases = node.testcases;
+
+        var subChildren = [];
+        if (typeof(node.testsuites) != "undefined") {
+            subChildren = node.testsuites;
+        } else {
+            if (typeof(node.testcases) != "undefined") {
+                subChildren = node.testcases;
+            }
+        }
+
+        var child = {
             name: node.name,
-            value: node.time
-        });
+            value: node.time,
+        };
+
+        if (subChildren.length) {
+            child["children"] = convertRawData(subChildren).children;
+        }
+
+        children.push(child);
     }
 
     return { children: children };
@@ -29,13 +48,13 @@ var svg = d3.select("#test_bubbles").append("svg")
 var tooltip = d3.select("#test_bubbles").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
-
+var data2;
 d3.json("./report.json", function(error, data) {
     if (error) {
         console.err(error);
         return;
     }
-
+data2 = data;
     var bubblizedData = bubble
         .nodes(convertRawData(data))
         .filter(function(node) {

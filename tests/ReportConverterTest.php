@@ -29,6 +29,7 @@ EOL;
         $expectedFeed = json_encode(
             array(
                 array(
+                    'type' => 'testsuite',
                     'name' => 'Project Test Suite',
                     'tests' => 2,
                     'assertions' => 14,
@@ -37,6 +38,7 @@ EOL;
                     'time' => 0.024016,
                     'testsuites' => array(
                         array(
+                            'type' => 'testsuite',
                             'name' => 'ArrayTest',
                             'file' => '/home/sb/ArrayTest.php',
                             'tests' => 2,
@@ -45,6 +47,7 @@ EOL;
                             'time' => 0.016030,
                             'testcases' => array(
                                 array(
+                                    'type' => 'testcase',
                                     'name' => 'testNewArrayIsEmpty',
                                     'class' => 'ArrayTest',
                                     'file' => '/home/sb/ArrayTest.php',
@@ -52,6 +55,7 @@ EOL;
                                     'time' => 0.008044,
                                 ),
                                 array(
+                                    'type' => 'testcase',
                                     'name' => 'testArrayContainsAnElement',
                                     'class' => 'ArrayTest',
                                     'file' => '/home/sb/ArrayTest.php',
