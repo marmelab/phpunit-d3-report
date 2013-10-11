@@ -1,12 +1,5 @@
 var bubblesContainer = document.getElementById("test_bubbles");
 
-var data = [
-    { name: "testNewArrayIsEmpty", "class": "ArrayTest", file: "/home/sb/ArrayTest.php", line: 6, time: 0.8044 },
-    { name: "testArrayContainsAnElement", "class": "ArrayTest", file: "/home/sb/ArrayTest.php", line: 15, time: 0.98044 },
-    { name: "testArrayContainsSeveralElement", "class": "ArrayTest", file: "/home/sb/ArrayTest.php", line: 32, time: 2.98044 },
-    { name: "testArrayContainsTooManyElement", "class": "ArrayTest", file: "/home/sb/ArrayTest.php", line: 47, time: 7.12044 },
-];
-
 function convertRawData(data) {
     var children = [];
     for(var i = 0, c = data.length ; i < c ; i++) {
@@ -33,27 +26,29 @@ var svg = d3.select("#test_bubbles").append("svg")
     .attr("height", diameter)
     .attr("class", "bubble");
 
-var bubblizedData = bubble
-    .nodes(convertRawData(data))
-    .filter(function(node) {
-        return !node.children;
-    });
+d3.json("./report.json", function(error, data) {
+    if (error) {
+        console.err(error);
+        return;
+    }
 
-var node = svg.selectAll(".node")
-    .data(bubblizedData)
-    .enter()
-        .append("g")
-            .attr("class", "node")
-            .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+    var bubblizedData = bubble
+        .nodes(convertRawData(data))
+        .filter(function(node) {
+            return !node.children;
+        });
 
-node.append("title")
-    .text(function(d) { return d.name + ": " + d.value + "s"; });
+    var node = svg.selectAll(".node")
+        .data(bubblizedData)
+        .enter()
+            .append("g")
+                .attr("class", "node")
+                .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
-node.append("circle")
-    .attr("r", function(d) { return d.r; })
-    .style("fill", function(d) { return color(d.packageName); });
+        node.append("title")
+            .text(function(d) { return d.name + ": " + d.value + "s"; });
 
-node.append("text")
-    .attr("dy", ".3em")
-    .style("text-anchor", "middle")
-    .text(function(d) { return d.name });
+        node.append("circle")
+            .attr("r", function(d) { return d.r; })
+            .style("fill", function(d) { return color(d.packageName); });
+});
