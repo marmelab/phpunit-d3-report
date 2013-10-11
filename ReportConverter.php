@@ -2,23 +2,15 @@
 
 class ReportConverter
 {
-    private $sourcePath;
-
     private $domDocument;
 
-    public function __construct($sourcePath)
+    public function __construct($sourceFeed)
     {
-        if (!file_exists($sourcePath)) {
-            throw new \Exception(sprintf('Unable to find "%s" file.', $sourcePath));
-        }
-
-        $this->sourcePath = $sourcePath;
-
         $this->domDocument = new \DOMDocument();
-        $this->domDocument->load($this->sourcePath);
+        $this->domDocument->loadXml($sourceFeed);
     }
 
-    public function convert($destinationPath)
+    public function convert()
     {
         $xpath = new \DOMXPath($this->domDocument);
         $testCases = $xpath->evaluate('//testcase');
@@ -33,6 +25,6 @@ class ReportConverter
             );
         }
 
-        file_put_contents($destinationPath, json_encode($outputReport));
+        return json_encode($outputReport);
     }
 }
