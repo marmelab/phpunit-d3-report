@@ -29,17 +29,40 @@ class ReportConverter
     {
         $outputTestCase = array(
             'name' => $testSuite->getAttribute('name'),
-            'file' => $testSuite->getAttribute('file'),
             'tests' => (int) $testSuite->getAttribute('tests'),
             'failures' => (int) $testSuite->getAttribute('failures'),
             'errors' => (int) $testSuite->getAttribute('errors'),
             'time' => (float) $testSuite->getAttribute('time'),
+            'testsuites' => array(),
             'testcases' => array(),
         );
 
-        $testCases = $this->xpath->evaluate('//testcase');
+        if ($testSuite->hasAttribute('file')) {
+            $outputTestCase['file'] = $testSuite->getAttribute('file');
+        }
+
+        if ($testSuite->hasAttribute('assertions')) {
+            $outputTestCase['assertions'] = (int) $testSuite->getAttribute('assertions');
+        }
+
+        // Add eventual sub test suites
+        $subTestSuites = $this->getImmediateChildrenByTagName($testSuite, 'testsuite');
+        foreach ($subTestSuites as $subTestSuite) {
+            $outputTestCase['testsuites'][] = $this->getTestSuiteAsArray($subTestSuite);
+        }
+
+        if (!count($outputTestCase['testsuites'])) {
+            unset($outputTestCase['testsuites']);
+        }
+
+        // Add eventual sub testcases
+        $testCases = $this->getImmediateChildrenByTagName($testSuite, 'testcase');
         foreach ($testCases as $testCase) {
             $outputTestCase['testcases'][] = $this->getTestCaseAsArray($testCase);
+        }
+
+        if (!count($outputTestCase['testcases'])) {
+            unset($outputTestCase['testcases']);
         }
 
         return $outputTestCase;
@@ -54,5 +77,26 @@ class ReportConverter
             'line' => (int) $testCase->getAttribute('line'),
             'time' => (float) $testCase->getAttribute('time'),
         );
+    }
+
+    /**
+     * Traverse an elements children and collect those nodes that
+     * have the tagname specified in $tagName. Non-recursive
+     *
+     * @param DOMElement $element
+     * @param string $tagName
+     * @return array
+     */
+    function getImmediateChildrenByTagName(\DOMElement $element, $tagName)
+    {
+        $result = array();
+        foreach($element->childNodes as $child)
+        {
+            if($child instanceof DOMElement && $child->tagName == $tagName)
+            {
+                $result[] = $child;
+            }
+        }
+        return $result;
     }
 }
