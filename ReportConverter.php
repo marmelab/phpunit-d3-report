@@ -71,7 +71,7 @@ class ReportConverter
 
     private function getTestCaseAsArray(\DOMElement $testCase)
     {
-        return array(
+        $result = array(
             'type' => 'testcase',
             'name' => $testCase->getAttribute('name'),
             'class' => $testCase->getAttribute('class'),
@@ -79,6 +79,17 @@ class ReportConverter
             'line' => (int) $testCase->getAttribute('line'),
             'time' => (float) $testCase->getAttribute('time'),
         );
+
+        $error = $this->getImmediateChildrenByTagName($testCase, 'error');
+        if (count($error)) {
+            $error = $error[0];
+            $result['error'] = array(
+                'type' => $error->getAttribute('type'),
+                'message' => $error->textContent,
+            );
+        }
+
+        return $result;
     }
 
     /**
@@ -99,6 +110,7 @@ class ReportConverter
                 $result[] = $child;
             }
         }
+
         return $result;
     }
 }

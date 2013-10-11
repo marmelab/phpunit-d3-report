@@ -18,7 +18,15 @@ function convertRawData(nodes) {
         var child = {
             name: node.name,
             value: node.time,
+            type: node.type,
         };
+
+        if (node.type == "testsuite") {
+            child["failures"] = node.failures;
+            child["errors"] = node.errors;
+        } else {
+            child["error"] = node.error;
+        }
 
         if (subChildren.length) {
             child["children"] = convertRawData(subChildren).children;
@@ -30,8 +38,7 @@ function convertRawData(nodes) {
     return { children: children };
 }
 
-var diameter = 800,
-    color = d3.scale.category20c();
+var diameter = 800;
 
 var svg = d3.select("#test_bubbles").append("svg")
     .attr("width", diameter)
@@ -55,7 +62,7 @@ d3.json("./report.json", function(error, data) {
 var bubble = d3.layout.pack()
     .sort(null)
     .size([diameter, diameter])
-    .padding(3.5);
+    .padding(15);
 
 function update() {
     node = svg.selectAll(".node").data(bubble.nodes(currentNode).filter(function(d) {
@@ -75,22 +82,24 @@ function update() {
 
     node.append("circle")
         .attr("r", function(d) { return d.r; })
-        .style("fill", function(d) { return color(d.name); });
+        .attr("class", function(d) {
+            return getNodeClass(d);
+        });
 
-        node
-            .on("mouseover", showToolTip)
-            .on("mouseout", hideToolTip)
-            .on("click", function(d) {
-                hideToolTip();
-                showBackLink();
-                currentNode = d;
+    node
+        .on("mouseover", showToolTip)
+        .on("mouseout", hideToolTip)
+        .on("click", function(d) {
+            hideToolTip();
+            showBackLink();
+            currentNode = d;
 
-                if (!d.children) {
-                    return false;
-                }
+            if (!d.children) {
+                return false;
+            }
 
-                update();
-            });
+            update();
+        });
 }
 
 function containsObject(obj, list) {
@@ -126,7 +135,7 @@ function hideToolTip(d)
             .style("opacity", 0);
 }
 
-var backLink = document.getElementById("back");
+var backLink = document.getElementById("back_link");
 
 function hideBackLink() {
     backLink.style.display = "none";
@@ -145,3 +154,22 @@ document.getElementById("back").addEventListener("click", function(e) {
 
     update();
 });
+
+function getNodeClass(d) {
+    console.log(d);
+    if (d.type == "testsuite") {
+        if (d.failures) {
+            return "failed";
+        } else if (d.errors) {
+            return "errored";
+        }
+    }
+
+    if (d.type == "testcase") {
+        if (d.error) {
+            return "errored";
+        }
+    }
+
+    return "success";
+}

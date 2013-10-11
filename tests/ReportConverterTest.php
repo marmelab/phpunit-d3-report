@@ -12,15 +12,18 @@ class ReportConverterTest extends \PHPUnit_Framework_TestCase
     <testsuite name="Project Test Suite" tests="2" assertions="14" failures="0" errors="0" time="0.024016">
         <testsuite name="ArrayTest" file="/home/sb/ArrayTest.php" tests="2" failures="0" errors="0" time="0.016030">
             <testcase name="testNewArrayIsEmpty"
-                  class="ArrayTest"
-                  file="/home/sb/ArrayTest.php"
-                  line="6"
-                  time="0.008044"/>
+                class="ArrayTest"
+                file="/home/sb/ArrayTest.php"
+                line="6"
+                time="0.008044"/>
             <testcase name="testArrayContainsAnElement"
-                  class="ArrayTest"
-                  file="/home/sb/ArrayTest.php"
-                  line="15"
-                  time="0.007986"/>
+                class="ArrayTest"
+                file="/home/sb/ArrayTest.php"
+                line="15"
+                time="0.007986"/>
+            <testcase name="testWithError" class="ArrayTest" file="/home/sb/ArrayTest.php" line="41" time="0.003614">
+                <error type="InvalidArgumentException">This is the error message.</error>
+            </testcase>
         </testsuite>
     </testsuite>
 </testsuites>
@@ -61,6 +64,18 @@ EOL;
                                     'file' => '/home/sb/ArrayTest.php',
                                     'line' => 15,
                                     'time' => 0.007986,
+                                ),
+                                array(
+                                    'type' => 'testcase',
+                                    'name' => 'testWithError',
+                                    'class' => 'ArrayTest',
+                                    'file' => '/home/sb/ArrayTest.php',
+                                    'line' => 41,
+                                    'time' => 0.003614,
+                                    'error' => array(
+                                        'type' => 'InvalidArgumentException',
+                                        'message' => 'This is the error message.',
+                                    )
                                 ),
                             ),
                         )

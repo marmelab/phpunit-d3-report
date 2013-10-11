@@ -14,8 +14,16 @@ h1 {
     text-align: center;
 }
 
-.bubble {
+.bubble circle {
     cursor: pointer;
+}
+
+.bubble circle.success {
+    fill: green;
+}
+
+.bubble circle.errored {
+    fill: red;
 }
 
 .tooltip {
@@ -32,5 +40,10 @@ footer {
 }
 
 #back {
+    position: relative;
+    top: -48px;
+}
+
+#back_link {
     display: none;
 }
