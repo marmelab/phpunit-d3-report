@@ -52,10 +52,14 @@ p {
     font-size: 14px;
 }
 
-.tooltip .error {
+.tooltip .error, .tooltip .failure {
     border-left: 3px solid red;
     padding-left: 10px;
     margin-left: 10px;
+}
+
+.tooltip .failure {
+    border-color: orange;
 }
 
 footer {

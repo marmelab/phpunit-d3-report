@@ -27,7 +27,13 @@ function convertRawData(nodes) {
             child["tests"] = node.tests;
             child["success"] = node.tests - node.failures - node.errors;
         } else {
-            child["error"] = node.error;
+            if (node.error) {
+                child["error"] = node.error;
+            }
+
+            if (node.failure) {
+                child["failure"] = node.failure;
+            }
         }
 
         if (subChildren.length) {
@@ -130,6 +136,11 @@ function getToolTipContent(d)
             content += "    <h5>" + d.error.type + "</h5>";
             content += "    <pre>" + d.error.message + "</pre>";
             content += "</div>";
+        } else if (d.failure) {
+            content += "<div class='failure'>";
+            content += "    <h5>" + d.failure.type + "</h5>";
+            content += "    <pre>" + d.failure.message + "</pre>";
+            content += "</div>";
         }
     }
 
@@ -178,16 +189,20 @@ document.getElementById("back").addEventListener("click", function(e) {
 function getNodeClass(d) {
     console.log(d);
     if (d.type == "testsuite") {
-        if (d.failures) {
-            return "failed";
-        } else if (d.errors) {
+        if (d.errors) {
             return "errored";
+        } else if (d.failures) {
+            return "failed";
         }
     }
 
     if (d.type == "testcase") {
         if (d.error) {
             return "errored";
+        }
+
+        if (d.failure) {
+            return "failed";
         }
     }
 

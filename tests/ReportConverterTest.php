@@ -24,6 +24,9 @@ class ReportConverterTest extends \PHPUnit_Framework_TestCase
             <testcase name="testWithError" class="ArrayTest" file="/home/sb/ArrayTest.php" line="41" time="0.003614">
                 <error type="InvalidArgumentException">This is the error message.</error>
             </testcase>
+            <testcase name="testWithFailure" class="ArrayTest" file="/home/sb/ArrayTest.php" line="51" time="0.001614">
+                <failure type="PHPUnit_Framework_ExpectationFailedException">True should be equal to false.</failure>
+            </testcase>
         </testsuite>
     </testsuite>
 </testsuites>
@@ -75,6 +78,18 @@ EOL;
                                     'error' => array(
                                         'type' => 'InvalidArgumentException',
                                         'message' => 'This is the error message.',
+                                    )
+                                ),
+                                array(
+                                    'type' => 'testcase',
+                                    'name' => 'testWithFailure',
+                                    'class' => 'ArrayTest',
+                                    'file' => '/home/sb/ArrayTest.php',
+                                    'line' => 51,
+                                    'time' => 0.001614,
+                                    'failure' => array(
+                                        'type' => 'PHPUnit_Framework_ExpectationFailedException',
+                                        'message' => 'True should be equal to false.',
                                     )
                                 ),
                             ),

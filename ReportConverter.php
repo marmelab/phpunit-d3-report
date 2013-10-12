@@ -80,13 +80,17 @@ class ReportConverter
             'time' => (float) $testCase->getAttribute('time'),
         );
 
-        $error = $this->getImmediateChildrenByTagName($testCase, 'error');
-        if (count($error)) {
-            $error = $error[0];
-            $result['error'] = array(
-                'type' => $error->getAttribute('type'),
-                'message' => $error->textContent,
-            );
+        // Add eventual errors and/or failures
+        $types = array('error', 'failure');
+        foreach ($types as $type) {
+            $typedElement = $this->getImmediateChildrenByTagName($testCase, $type);
+            if (count($typedElement)) {
+                $typedElement = $typedElement[0];
+                $result[$type] = array(
+                    'type' => $typedElement->getAttribute('type'),
+                    'message' => $typedElement->textContent,
+                );
+            }
         }
 
         return $result;
