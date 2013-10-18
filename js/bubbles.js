@@ -61,7 +61,9 @@ var node;
 var originData;
 var currentNode;
 
-d3.json("./report.json", function(error, data) {
+d3.text("./report.xml", function(error, data) {
+    data = ReportTransformer.transform(data);
+    console.log(data);
     originData = convertRawData(data);
     currentNode = originData;
     update(function(n) { return n.depth == 1; });
@@ -187,7 +189,6 @@ document.getElementById("back").addEventListener("click", function(e) {
 });
 
 function getNodeClass(d) {
-    console.log(d);
     if (d.type == "testsuite") {
         if (d.errors) {
             return "errored";
