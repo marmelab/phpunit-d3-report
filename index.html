@@ -7,9 +7,22 @@
 </head>
 <body>
     <h1>PHPUnit report</h1>
+
+    <h2>How to generate your own report?</h2>
+    <p>To generate a report, simply execute your PHPUnit test suite including the <code>--log-junit</code> argument, such as:</p>
+    <code>
+        <pre>phpunit --log-junit report.xml</pre>
+    </code>
+    Then, open the file and copy/paste its content to the following form:
+    <form id="report_form">
+        <textarea name="report" id="report"></textarea>
+        <button type="submit">Generate</button>
+    </form>
+
     <div id="test_bubbles">
         <p id="back"><a href="#" id="back_link">Back level</a></p>
     </div>
+
     <footer>
         <p>PHPUnit d3-report - Created by <a href="http://www.marmelab.com">Marmelab</a> crew</p>
     </footer>

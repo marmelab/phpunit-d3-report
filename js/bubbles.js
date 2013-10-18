@@ -61,9 +61,16 @@ var node;
 var originData;
 var currentNode;
 
-d3.text("./report.xml", function(error, data) {
-    data = ReportTransformer.transform(data);
-    console.log(data);
+document.getElementById("report_form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    currentNode = null;
+    originData = null;
+    
+    hideBackLink();
+
+    var report = document.getElementById("report").value;
+    data = ReportTransformer.transform(report);
     originData = convertRawData(data);
     currentNode = originData;
     update(function(n) { return n.depth == 1; });
