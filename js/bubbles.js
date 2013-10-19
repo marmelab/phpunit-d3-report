@@ -46,7 +46,7 @@ function convertRawData(nodes) {
     return { children: children };
 }
 
-var diameter = 540;
+var diameter = 580;
 
 var svg = d3.select("#test_bubbles").append("svg")
     .attr("width", diameter)
@@ -76,6 +76,8 @@ document.getElementById("report_form").addEventListener("submit", function(e) {
     currentNode = null;
     originData = null;
 
+    document.getElementById("sample_introduction").innerText = "Here is your custom report:";
+
     hideBackLink();
 
     var report = document.getElementById("report").value;
@@ -83,6 +85,8 @@ document.getElementById("report_form").addEventListener("submit", function(e) {
     originData = convertRawData(data);
     currentNode = originData;
     update();
+
+    window.scrollTo(0);
 });
 
 var bubble = d3.layout.pack()
