@@ -46,7 +46,7 @@ function convertRawData(nodes) {
     return { children: children };
 }
 
-var diameter = 600;
+var diameter = 540;
 
 var svg = d3.select("#test_bubbles").append("svg")
     .attr("width", diameter)
@@ -61,6 +61,15 @@ var node;
 var originData;
 var currentNode;
 
+function loadSymfony2Bubbles()
+{
+    d3.json("reports/symfony2.json", function(err, data) {
+        originData = convertRawData(data);
+        currentNode = originData;
+        update();
+    });
+}
+
 document.getElementById("report_form").addEventListener("submit", function(e) {
     e.preventDefault();
 
@@ -73,7 +82,7 @@ document.getElementById("report_form").addEventListener("submit", function(e) {
     data = ReportTransformer.transform(report);
     originData = convertRawData(data);
     currentNode = originData;
-    update(function(n) { return n.depth == 1; });
+    update();
 });
 
 var bubble = d3.layout.pack()
@@ -188,6 +197,7 @@ function showBackLink() {
 document.getElementById("back").addEventListener("click", function(e) {
     e.preventDefault();
     currentNode = currentNode.parent;
+    console.log(currentNode);
     if (!currentNode.parent) {
         hideBackLink();
     }
@@ -222,3 +232,5 @@ function pad(n, width, z) {
   n = n + '';
   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
+
+loadSymfony2Bubbles();
