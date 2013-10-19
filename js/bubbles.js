@@ -66,7 +66,7 @@ document.getElementById("report_form").addEventListener("submit", function(e) {
 
     currentNode = null;
     originData = null;
-    
+
     hideBackLink();
 
     var report = document.getElementById("report").value;

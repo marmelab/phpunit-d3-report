@@ -3,29 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>PHPUnit report</title>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <link href="style.css" rel="stylesheet" />
 </head>
 <body>
-    <h1>PHPUnit report</h1>
+    <div class="content">
+        <div class="container">
+            <h1>PHPUnit report</h1>
+            <p class="lead">This visualization tool provides a quick way to monitor your PHPUnit test suites. With a single glance, you will be able to identify the slowest tests, helping you to improve the overall execution time of your tests.</p>
 
-    <h2>How to generate your own report?</h2>
-    <p>To generate a report, simply execute your PHPUnit test suite including the <code>--log-junit</code> argument, such as:</p>
-    <code>
-        <pre>phpunit --log-junit report.xml</pre>
-    </code>
-    Then, open the file and copy/paste its content to the following form:
-    <form id="report_form">
-        <textarea name="report" id="report"></textarea>
-        <button type="submit">Generate</button>
-    </form>
+            <h2>My report</h2>
+            <div id="test_bubbles">
+                <p id="back"><a href="#" id="back_link">Back level</a></p>
+            </div>
 
-    <div id="test_bubbles">
-        <p id="back"><a href="#" id="back_link">Back level</a></p>
+            <h2>How to generate your own report?</h2>
+            <p>To generate a report, simply execute your PHPUnit test suite including the <code>--log-junit</code> argument, such as:</p>
+            <code>
+                <pre>phpunit --log-junit report.xml</pre>
+            </code>
+            <p>Then, open the file and copy/paste its content to the following form:</p>
+            <form id="report_form" class="text-right">
+                <p>
+                    <textarea name="report" id="report" class="form-control" rows="6"></textarea><br />
+                    <button class="btn btn-primary" type="submit">Generate</button>
+                </p>
+            </form>
+
+            <h2>Installing the project locally</h2>
+            <p>If you want to install this project locally, simply clone the <a href="https://github.com/marmelab/phpunit-d3-report">GitHub repository</a> and install its Bower dependencies:</p>
+            <code>
+                <pre># Cloning repository
+git clone https://github.com/marmelab/phpunit-d3-report
+
+# Installing dependencies
+bower install</pre></code>
+            <p>Finally, simply open the file into your favorite browser. No need of any VirtualHost or other special configuration: all is done client-side.</p>
+            </code>
+            <h2>Licence</h2>
+            <p>This <a href="http://www.marmelab.com">Marmelab</a> experiment, developed by <a href="http://www.jonathan-petitcolas.com">Jonathan Petitcolas</a>, is released under the MIT licence. It means you can blow unlimited bubbles in all your projects, without restrictions.</p>
+        </div>
     </div>
 
-    <footer>
-        <p>PHPUnit d3-report - Created by <a href="http://www.marmelab.com">Marmelab</a> crew</p>
-    </footer>
     <script src="bower_components/d3/d3.min.js"></script>
     <script src="bower_components/momentjs/min/moment.min.js"></script>
     <script src="js/report-transformer.js"></script>

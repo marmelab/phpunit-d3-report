@@ -23,6 +23,7 @@
   ],
   "dependencies": {
     "d3": "~3.3.7",
-    "momentjs": "~2.3.1"
+    "momentjs": "~2.3.1",
+    "bootstrap": "~3.0.0"
   }
 }

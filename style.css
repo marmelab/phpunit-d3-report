@@ -1,21 +1,4 @@
-body {
-    color: #444;
-    font-family: 'Gentium Book Basic', serif;
-    width: 1024px;
-    margin: auto;
-    font-size: 14px;
-}
-
-h1 {
-    border-bottom: 1px solid #666;
-}
-
-p {
-    margin: 0;
-}
-
 #test_bubbles {
-
     text-align: center;
 }
 
@@ -60,18 +43,4 @@ p {
 
 .tooltip .failure {
     border-color: orange;
-}
-
-footer {
-    text-align: center;
-    color: #666;
-}
-
-#back {
-    position: relative;
-    top: -48px;
-}
-
-#back_link {
-    display: none;
 }
