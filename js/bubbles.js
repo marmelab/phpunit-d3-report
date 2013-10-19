@@ -46,7 +46,7 @@ function convertRawData(nodes) {
     return { children: children };
 }
 
-var diameter = 580;
+var diameter = 450;
 
 var svg = d3.select("#test_bubbles").append("svg")
     .attr("width", diameter)
