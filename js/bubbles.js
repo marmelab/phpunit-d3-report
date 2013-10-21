@@ -145,10 +145,16 @@ function containsObject(obj, list) {
 
 function getToolTipContent(d)
 {
-    var time = moment({ seconds: d.value });
+    var time;
+    if (d.value > 1) {
+        time = moment({ seconds: d.value });
+        time = pad(time.minutes(), 2) + ":" + pad(time.seconds(), 2)
+    } else {
+        time = Math.round(d.value * 1000) + "ms";
+    }
 
     var content  = "<h3>" + d.name + "</h3>";
-        content += "<p><strong>Time:</strong> " + pad(time.minutes(), 2) + ":" + pad(time.seconds(), 2);
+        content += "<p><strong>Time:</strong> " + time;
 
     if (d.type == "testsuite") {
         content += "<p>" + d.failures + " failures, " + d.errors + " errors, " + d.success + " success</p>";
@@ -201,7 +207,7 @@ function showBackLink() {
 document.getElementById("back").addEventListener("click", function(e) {
     e.preventDefault();
     currentNode = currentNode.parent;
-    console.log(currentNode);
+
     if (!currentNode.parent) {
         hideBackLink();
     }
