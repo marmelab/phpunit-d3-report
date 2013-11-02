@@ -3,41 +3,18 @@ function convertRawData(nodes) {
     for(var i = 0, c = nodes.length ; i < c ; i++) {
         var node = nodes[i];
 
-        var testsuites = node.testsuites;
-        var testcases = node.testcases;
-
-        var subChildren = [];
-        if (typeof(node.testsuites) != "undefined") {
-            subChildren = node.testsuites;
-        } else {
-            if (typeof(node.testcases) != "undefined") {
-                subChildren = node.testcases;
-            }
-        }
-
         var child = {
             name: node.name,
             value: node.time,
             type: node.type,
         };
 
-        if (node.type == "testsuite") {
-            child["failures"] = node.failures;
-            child["errors"] = node.errors;
-            child["tests"] = node.tests;
-            child["success"] = node.tests - node.failures - node.errors;
-        } else {
-            if (node.error) {
-                child["error"] = node.error;
-            }
-
-            if (node.failure) {
-                child["failure"] = node.failure;
-            }
+        if (node.error) {
+            child["error"] = node.error;
         }
 
-        if (subChildren.length) {
-            child["children"] = convertRawData(subChildren).children;
+        if (node.failure) {
+            child["failure"] = node.failure;
         }
 
         children.push(child);
@@ -90,14 +67,16 @@ document.getElementById("report_form").addEventListener("submit", function(e) {
 });
 
 var bubble = d3.layout.pack()
-    .sort(null)
     .size([diameter, diameter])
-    .padding(15);
+    .sort(function(a, b) {
+        return a.value - b.value;
+    })
+    .padding(2);
 
 function update() {
     node = svg.selectAll(".node").data(bubble.nodes(currentNode).filter(function(d) {
-        return d.depth == (currentNode.depth + 1);
-    }), function(d) { return d.name; });
+        return d.depth == 1;
+    }), function(d) { return d.name });
 
     node.enter()
         .append("g")
@@ -119,17 +98,7 @@ function update() {
     node
         .on("mouseover", showToolTip)
         .on("mouseout", hideToolTip)
-        .on("click", function(d) {
-            hideToolTip();
-            showBackLink();
-            currentNode = d;
-
-            if (!d.children) {
-                return false;
-            }
-
-            update();
-        });
+    ;
 }
 
 function containsObject(obj, list) {

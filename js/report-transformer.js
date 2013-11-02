@@ -3,54 +3,13 @@ var ReportTransformer = {
 		var doc = (new DOMParser).parseFromString(xmlReport, 'text/xml');
 
 		var parsedReport = [];
-		
-		var testSuitesIterator = doc.evaluate('/testsuites/testsuite', doc, null, 5, null);
-		while (node = testSuitesIterator.iterateNext()) {
-			parsedReport.push(this.parseTestSuite(node));
+
+		var testCasesIterator = doc.evaluate('//testcase', doc, null, 5, null);
+		while (node = testCasesIterator.iterateNext()) {
+			parsedReport.push(this.parseTestCase(node));
 		}
 
 		return parsedReport;
-	},
-
-	parseTestSuite: function(node) {
-		var testSuite = {
-			type: "testsuite",
-			name: node.getAttribute("name"),
-			tests: node.getAttribute("tests") * 1,
-			failures: node.getAttribute("failures") * 1,
-			errors: node.getAttribute("errors") * 1,
-			time: node.getAttribute("time") * 1
-		};
-
-		if (file = node.getAttribute("file")) {
-			testSuite["file"] = file;
-		}
-
-		if (assertions = node.getAttribute("assertions")) {
-			testSuite["assertions"] = assertions;
-		}
-
-		// Retrieve eventual sub test suites
-		var subTestSuites = this.getImmediateChildrenByTagName(node, "testsuite");
-		var numberSubTestSuites = subTestSuites.length;
-		if (numberSubTestSuites) {
-			testSuite["testsuites"] = [];
-			for (var i = 0 ; i < numberSubTestSuites ; i++) {
-				testSuite["testsuites"].push(this.parseTestSuite(subTestSuites[i]));
-			}
-		}
-
-		// Add eventual sub testcases
-        var testcases = this.getImmediateChildrenByTagName(node, "testcase");
-        var numberTestCases = testcases.length;
-        if (numberTestCases) {
-        	testSuite["testcases"] = [];
-        	for (var i = 0 ; i < numberTestCases ; i++) {
-        		testSuite["testcases"].push(this.parseTestCase(testcases[i]));
-        	}
-        }
-
-		return testSuite;
 	},
 
 	parseTestCase: function(testcaseNode) {
