@@ -30,7 +30,7 @@ var ReportTransformer = {
 				var typedElement = typedElements[0];
 				testCase[types[i]] = {
 					type: typedElement.getAttribute("type"),
-					message: typedElement.innerText
+					message: typedElement.textContent
 				}
 			}
 		}
