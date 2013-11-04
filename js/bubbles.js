@@ -6,8 +6,12 @@ function convertRawData(nodes) {
         var child = {
             name: node.name,
             value: node.time,
-            type: node.type,
+            type: node.type
         };
+
+        if (node.time < 0.005) {
+            continue;
+        }
 
         if (node.error) {
             child["error"] = node.error;
@@ -69,14 +73,14 @@ document.getElementById("report_form").addEventListener("submit", function(e) {
 var bubble = d3.layout.pack()
     .size([diameter, diameter])
     .sort(function(a, b) {
-        return a.value - b.value;
+        return Math.random() < 0.5;
     })
     .padding(2);
 
 function update() {
     node = svg.selectAll(".node").data(bubble.nodes(currentNode).filter(function(d) {
         return d.depth == 1;
-    }), function(d) { return d.name });
+    }));
 
     node.enter()
         .append("g")
