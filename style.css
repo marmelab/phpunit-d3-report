@@ -4,6 +4,9 @@
 
 .bubble circle {
     cursor: pointer;
+    stroke: #aaa;
+    stroke-width: 1px;
+    fill-opacity: .5;
 }
 
 .bubble circle.success {
