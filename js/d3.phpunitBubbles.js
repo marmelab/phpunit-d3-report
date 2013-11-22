@@ -1,12 +1,12 @@
 d3.chart = d3.chart || {};
 
 d3.chart.phpunitBubbles = function(options) {
-	
+
 	var width = 600;
 	var height = 450;
-	var padding = 2;
+	var padding = 1;
 	var className = "bubbles";
-	
+
 	var sort = function(a, b) {
 		return Math.random() < 0.5;
 	};
@@ -126,6 +126,62 @@ d3.chart.phpunitBubbles = function(options) {
 				.on("mouseout",  onMouseOut);
 		});
 	}
+
+	chart.width = function(value) {
+        if (!arguments.length) return width;
+        width = value;
+
+        return chart;
+    };
+
+    chart.height = function(value) {
+        if (!arguments.length) return height;
+        height = value;
+
+    	return chart;
+  	};
+
+  	chart.padding = function(value) {
+    	if (!arguments.length) return padding;
+    	padding = value;
+
+    	return chart;
+  	};
+
+  	chart.className = function(value) {
+    	if (!arguments.length) return className;
+    	className = value;
+
+    	return chart;
+  	};
+
+  	chart.sort = function(value) {
+    	if (!arguments.length) return sort;
+    	sort = value;
+
+    	return chart;
+  	};
+
+  	chart.onMouseOver = function(value) {
+    	if (!arguments.length) return onMouseOver;
+    	onMouseOver = value;
+
+    	return chart;
+  	};
+
+  	chart.onMouseMove = function(value) {
+    	if (!arguments.length) return onMouseMove;
+    	onMouseMove = value;
+
+    	return chart;
+  	};
+
+  	chart.onMouseOut = function(value) {
+  		if (!arguments.length) return onMouseOut;
+    	onMouseOut = value;
+
+    	return chart;
+  	};
 
 	return chart;
 }

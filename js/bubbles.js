@@ -1,4 +1,4 @@
-var chart = d3.chart.phpunitBubbles();
+var chart = d3.chart.phpunitBubbles().padding(2);
 
 // Load Symfony2 test suite sample
 d3.json("reports/symfony2.json", function(err, data) {
