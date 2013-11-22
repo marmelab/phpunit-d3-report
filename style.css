@@ -1,23 +1,23 @@
-#test_bubbles {
+#bubbles {
     text-align: center;
 }
 
-.bubble circle {
+.bubbles circle {
     cursor: pointer;
     stroke: #aaa;
     stroke-width: 1px;
     fill-opacity: .5;
 }
 
-.bubble circle.success {
+.bubbles circle.success {
     fill: green;
 }
 
-.bubble circle.errored {
+.bubbles circle.errored {
     fill: red;
 }
 
-.bubble circle.failed {
+.bubbles circle.failed {
     fill: orange;
 }
 
@@ -47,5 +47,3 @@
 .tooltip .failure {
     border-color: orange;
 }
-
-#back_link { display: none; }
