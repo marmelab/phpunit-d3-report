@@ -18,17 +18,9 @@ d3.chart.phpunitBubbles = function(options) {
 	}
 
 	var onMouseOver = function(data) {
-		// Update tooltip content
-		var time;
-		if (data.value > 1) {
-			time = moment({ seconds: data.value });
-			time = time.minutes() + ":" + time.seconds();
-		} else {
-			time = Math.round(data.value * 1000) + "ms";
-		}
-
+        // Update tooltip content
 		var content  = "<h3>" + data.name + "</h3>";
-			content += "<p><strong>Time:</strong> " + time;
+			content += "<p><strong>Time:</strong> " + convertDuration(data.value * 1000);
 
         if (data.error) {
             content += "<div class='error'>";
@@ -74,6 +66,20 @@ d3.chart.phpunitBubbles = function(options) {
 
 	    return { children: children };
 	}
+
+    function convertDuration(milliseconds) {
+        if (milliseconds < 1000) {
+            return Math.round(milliseconds) + "ms";
+        }
+
+        var duration = moment.duration(milliseconds);
+        var seconds = duration.get("seconds");
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+
+        return duration.get("minutes") + ":" + seconds;
+    }
 
 	function getNodeClass(d) {
 		if (d.error) {
