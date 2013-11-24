@@ -20,6 +20,18 @@ Then, simply copy-paste your XML report into the report form, and let the magic 
 
 Note: if you want to open this project locally, you will have to create a VirtualHost to see the default Symfony2 report. Indeed, it is stored as a pre-computed JSON, and opening it will raise a cross-domain security issue from your browser.
 
+## Installing the project locally
+
+If you want to install this project locally, simply clone the [GitHub repository](https://github.com/marmelab/phpunit-d3-report) and install its Bower dependencies:
+
+``` sh
+# Cloning repository
+git clone https://github.com/marmelab/phpunit-d3-report
+
+# Installing dependencies
+bower install
+```
+
 ## Re-using the chart
 
 This chart has been thought to be easily re-usable. This way, you can embed it and customize the resulting chart in your own application.
