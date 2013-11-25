@@ -13,10 +13,7 @@
             <p class="lead">This visualization tool provides a quick way to monitor your PHPUnit test suites. With a single glance, you will be able to identify the slowest tests, helping you to improve the overall execution time of your tests.</p>
 
             <p id="sample_introduction">Here is a sample of report this utility can generate. It is based on <a href="https://github.com/symfony/symfony/tree/2.3">Symfony 2.3</a> test suite:</p>
-            <div id="test_bubbles">
-                <p id="back">
-                    <a href="#" id="back_link">Back</a>
-                </p>
+            <div id="bubbles">
             </div>
 
             <h2>How to generate your own report?</h2>
@@ -51,6 +48,7 @@ bower install</pre></code>
     <script src="bower_components/d3/d3.min.js"></script>
     <script src="bower_components/momentjs/min/moment.min.js"></script>
     <script src="js/report-transformer.js"></script>
+    <script src="js/d3.phpunitBubbles.js"></script>
     <script src="js/bubbles.js"></script>
 </body>
 </html>
