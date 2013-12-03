@@ -62,7 +62,7 @@ Here is the list of all available parameters:
 * **padding**: margin between each bubbles in pixels (default: 1)
 * **className**: class name of bubbles container (default: bubbles)
 * **sort**: sorting closure to order bubbles (default: random order)
-* **onMouseOver**: event when mouse enters on a bubble (default: display a tooltip providing more information on hovered test)
+* **onMouseOver**: event when mouse enters on a bubble (default: display a tooltip with test details)
 * **onMouseMove**: event when mouse moves inside a bubble (default: update the tooltip describing the test)
 * **onMouseOut**: event when mouse moves outside a bubble (default: hide the tooltip)
 
