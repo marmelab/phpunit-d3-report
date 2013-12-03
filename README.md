@@ -1,10 +1,12 @@
-# PHPUnit D3 report
-
-![PHPUnit D3 report - By Marmelab](screenshot.png)
+# PHPUnit d3 report
 
 This visualization tool provides a quick way to monitor your PHPUnit test suites. With a single glance, you will be able to identify the slowest tests, helping you to improve the overall execution time of your tests.
 
-Developed during a hackday at [Marmelab](http://www.marmelab.com), this tool is currently pretty raw, but will be improved over time.
+Here is what Symfony2 test suite report looks like:
+
+![Symfony2 test suite, analyzed by PHPUnit D3 report](screenshot.png)
+
+For live demonstration and online report generation, here is the [demo page](http://marmelab.com/phpunit-d3-report/).
 
 ## How to generate a report?
 
@@ -14,14 +16,83 @@ To generate a report, simply execute your PHPUnit test suite including the `--lo
 phpunit --log-junit report.xml
 ```
 
-Then, execute the `convert-junit-report.php` script to translate the XML report into a report-ready form. In current version, the XML report should be one folder above the script (it will be improved in a future version).
+Then, simply copy-paste your XML report into the report form, and let the magic happen!
 
-Finally, simply open the `report.html` page into your browser. Be careful: for security reasons, you have to configure a VHost to make it work.
+Note: if you want to open this project locally, you will have to create a VirtualHost to see the default Symfony2 report. Indeed, it is stored as a pre-computed JSON, and opening it will raise a cross-domain security issue from your browser.
 
-## Todos
+## Installing the project locally
 
-Several features will be added in the next weeks:
+If you want to install this project locally, simply clone the [GitHub repository](https://github.com/marmelab/phpunit-d3-report) and install its Bower dependencies:
 
-* General code cleaning
-* Using PHPUnit JSON format instead of XML one
-* Remove JUnit report conversion to input the feed directly on the interface (will especially allow to use this reporting utility directly from GitHub pages, without having to install anything locally)
+``` sh
+# Cloning repository
+git clone https://github.com/marmelab/phpunit-d3-report
+
+# Installing dependencies
+bower install
+```
+
+## Re-using the chart
+
+This chart has been thought to be easily re-usable. This way, you can embed it and customize the resulting chart in your own application.
+
+To create a new chart, simply prepare the PHPUnit XML report thanks to `ReportTransformer` class, pass resulting JSON to the container element and call the chart function:
+
+``` js
+var chart = d3.chart.phpunitBubbles();
+
+d3.json("reports/report.xml", function(err, data) {
+    d3.select("#bubbles")
+        .datum(ReportTransformer.transform(data))
+        .call(chart);
+});
+```
+### Parameters
+
+If you want to customize the output report, several paramaters are available as functions, following the [Mike Bostock's re-usable chart pattern]. For instance, if you want to modify the padding of each bubble, use:
+
+``` js
+var chart = d3.chart.phpunitBubbles().padding(10);
+```
+
+Here is the list of all available parameters:
+
+* **width**: width of report in pixels (default: 900)
+* **height**: height of report in pixels (default: 900)
+* **padding**: margin between each bubbles in pixels (default: 1)
+* **className**: class name of bubbles container (default: bubbles)
+* **sort**: sorting closure to order bubbles (default: random order)
+* **onMouseOver**: event when mouse enters on a bubble (default: display a tooltip with test details)
+* **onMouseMove**: event when mouse moves inside a bubble (default: update the tooltip describing the test)
+* **onMouseOut**: event when mouse moves outside a bubble (default: hide the tooltip)
+
+For instance, here is a full customized chart:
+
+``` js
+var chart = d3.chart.phpunitBubbles()
+    .width(800)
+    .height(600)
+    .padding(3)
+    .className("report")
+    .sort(function(a, b) {
+        return a.value - b.value;
+    })
+    .onMouseOver(function(test) {
+        console.log("Entering " + test.name);
+    })
+    .onMouseMove(function() {})
+    .onMouseOut(function(test) {
+        console.log("Exiting " + test.name);
+    });
+```
+
+## Licence
+
+<p>This project is released under the MIT licence (thanks to [Marmelab](http://www.marmelab.com) courtesy). It means you can blow unlimited bubbles in all your projects, with the only obligation to embed the original licence file into your fork.</p>
+
+## Contributors
+
+A special thanks to all contributors of this project:
+
+* [Jonathan Petitcolas](http://www.jonathan-petitcolas.com)
+* [François Zaninotto](http://redotheweb.com)
