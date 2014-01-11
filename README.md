@@ -47,6 +47,15 @@ d3.json("reports/report.xml", function(err, data) {
         .call(chart);
 });
 ```
+
+If you want to display a single report (for instance, on your project page), you do not need the `ReportTransformer`. Simply download the converted JSON report from the [GitHub page](http://marmelab.com/phpunit-d3-report/), just under the chart. Then, you can query directly the report, skipping the transformation process, and thus optimizing performances.
+
+``` js
+d3.json("reports/phpunit-d3-report.json", function(err, data) {
+    d3.select("#bubbles").datum(data).call(chart);
+});
+```
+
 ### Parameters
 
 If you want to customize the output report, several paramaters are available as functions, following the [Mike Bostock's re-usable chart pattern]. For instance, if you want to modify the padding of each bubble, use:
