@@ -15,7 +15,7 @@ var ReportTransformer = {
 	parseTestCase: function(testcaseNode) {
 		var testCase = {
 			type: "testcase",
-			name: testcaseNode.getAttribute("name"),
+			name: testcaseNode.parentNode.getAttribute("name") + "->" + testcaseNode.getAttribute("name"),
 			"class": testcaseNode.getAttribute("class"),
 			file: testcaseNode.getAttribute("file"),
 			line: testcaseNode.getAttribute("line") * 1,
