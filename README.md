@@ -1,3 +1,12 @@
+<table>
+        <tr>
+            <td><img width="20" src="https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/archive.svg" alt="archived" /></td>
+            <td><strong>Archived Repository</strong><br />
+            This code is no longer maintained. Feel free to fork it, but use it at your own risks.
+        </td>
+        </tr>
+</table>
+
 # PHPUnit d3 report
 
 This visualization tool provides a quick way to monitor your PHPUnit test suites. With a single glance, you will be able to identify the slowest tests, helping you to improve the overall execution time of your tests.
